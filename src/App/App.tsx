@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Hourglass, reset, Table, TableHeadCell, TableRow, TableDataCell, TableHead, TableBody, themes, Bar, Window, WindowHeader, WindowContent, List, ListItem, Button, Avatar, Divider, Toolbar, AppBar } from "react95";
 
@@ -33,15 +33,62 @@ function Menu() {
   );
 }
 
-const Tiles = () => {
+const generateField = (width: number, height: number, numMines: number) => {
+  let field: any = [];
+  for (let i = 0; i < height; i++) {
+    field[i] = [];
+    for (let j = 0; j < width; j++) {
+      field[i][j] = 0;
+    }    
+  }
+  // add mines
+  for (let k = 0; k < numMines; k++) {
+    const x = Math.floor(Math.random() * width);
+    const y = Math.floor(Math.random() * height);
+    field[x][y] = 'x';
+  }
+  // populate numbers
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+      if (field[i][j] === 'x') {
+        // increment top left
+        if (field[i-1] && typeof(field[i-1][j-1]) === "number") field[i-1][j-1]++;
+        // increment top
+        if (field[i-1] && typeof(field[i-1][j]) === "number") field[i-1][j]++;
+        // increment top right
+        if (field[i-1] && typeof(field[i-1][j+1]) === "number") field[i-1][j+1]++;
+        // increment right
+        if (typeof(field[i][j+1]) === "number") field[i][j+1]++;
+        // increment bottom right
+        if (field[i+1] && typeof(field[i+1][j+1]) === "number") field[i+1][j+1]++;
+        // increment bottom
+        if (field[i+1] && typeof(field[i+1][j]) === "number") field[i+1][j]++;
+        // increment bottom left
+        if (field[i+1] && typeof(field[i+1][j-1]) === "number") field[i+1][j-1]++;
+        // increment left
+        if (typeof(field[i][j-1]) === "number") field[i][j-1]++;
+      }
+    }    
+  }  
+  return [...field];
+}
+
+const Tiles = (field: any) => {
+  let grid = field.field;
+  console.log("Field", field);
   let a = [];
-  for (let i = 0; i < 100; i++) {
-    a.push(<Button square id={i}>{i}</Button>);
+  const opened = {"backgroundColor": "lightgrey"};
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      a.push(<Button variant={grid[i][j] === 0 ? "flat" : "default"} style={grid[i][j] === 0 ? {...opened} : null} square id={i+j}>{grid[i][j]}</Button>);
+    }
   }
   return <>{a}</>;
 }
 
 function App() {
+  const field = generateField(10,10,20);
+  const [field1, setField] = useState("");
   return (
     <div className="App">
       <ResetStyles />
@@ -115,7 +162,7 @@ function App() {
             </TableBody>
           </Table>
       <WindowContent>
-        <Tiles/>
+        <Tiles field={field}/>
       </WindowContent>
     </Window>
     </div>
