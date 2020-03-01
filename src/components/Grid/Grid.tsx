@@ -1,80 +1,10 @@
-import React, { useState } from "react";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import {
-  Hourglass,
-  reset,
-  Table,
-  TableHeadCell,
-  TableRow,
-  TableDataCell,
-  TableHead,
-  TableBody,
-  themes,
-  Bar,
-  Window,
-  WindowHeader,
-  WindowContent,
-  List,
-  ListItem,
-  Button,
-  Divider,
-  Toolbar,
-  AppBar
-} from "react95";
-import mine from "../assets/mine.png";
-import flag from "../assets/flag.png";
-import smiley from "../assets/smiley.png";
-import fbicon from "../assets/facebook.png";
-import pinteresticon from "../assets/pinterest.png";
-import lnkedinicon from "../assets/linkedin.png";
-import twittericon from "../assets/twitter.png";
+import React, {useState} from "react";
+import { Button } from "react95";
+import mine from "../../assets/mine.png";
+import flag from "../../assets/flag.png";
+import smiley from "../../assets/smiley.png";
 
-// Easy = 9x9, 10 mines
-// Medium = 16x16, 40 mines
-// Hard = 30x30, 160 mines
-// maybe "Shift + Click" to flag
-const ResetStyles = createGlobalStyle`
-  ${reset}
-`;
-
-function Menu() {
-  const [open, setOpen] = React.useState(false);
-
-  function handleClick() {
-    setOpen(!open);
-  }
-
-  function handleClose() {
-    setOpen(false);
-  }
-
-  return (
-    <div style={{ position: "relative", display: "inline-block" }}>
-      {open && (
-        <List
-          horizontalAlign="left"
-          verticalAlign="bottom"
-          open={open}
-          onClick={handleClose}
-        >
-          <ListItem>👨‍💻 Change Size</ListItem>
-          <Divider />
-          <ListItem disabled>🔙 About</ListItem>
-        </List>
-      )}
-      <Button
-        onClick={handleClick}
-        active={open}
-        style={{ fontWeight: "bold" }}
-      >
-        <img src={smiley} width={16} height={16} style={{ marginLeft: -2, marginRight: 4 }} />
-        Menu
-      </Button>
-    </div>
-  );
-}
-
-const generateField = (width: number, height: number, numMines: number) => {
+const generateEmptyField = (width: number, height: number) => {
   let field: any = [];
   for (let i = 0; i < height; i++) {
     field[i] = [];
@@ -82,6 +12,15 @@ const generateField = (width: number, height: number, numMines: number) => {
       field[i][j] = 0;
     }
   }
+
+  return [...field];
+};
+export const generateSolvedField = (
+  width: number,
+  height: number,
+  numMines: number
+) => {
+  let field: any = generateEmptyField(width, height);
   // add mines
   for (let k = 0; k < numMines; k++) {
     const x = Math.floor(Math.random() * width);
@@ -120,9 +59,12 @@ const generateField = (width: number, height: number, numMines: number) => {
   return [...field];
 };
 
-const Tiles = (field: any) => {
-  let grid = field.field;
-  console.log("Field", field);
+const Grid = (props: any) => {
+  let [grid, setGrid] = useState(generateSolvedField(props.height, props.width, props.numMines));
+  let [revealedGrid, setRevealedGrid] = useState(generateEmptyField(props.width, props.height));
+
+  console.log("grid", grid);
+
   let a = [];
   let style = {
     backgroundColor: "lightgrey",
@@ -145,8 +87,12 @@ const Tiles = (field: any) => {
             variant={grid[i][j] === 0 ? "flat" : "default"}
             style={xstyle}
             square
-            id={i + j}
+            id={i + ":" + j}
             size="md"
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             <img src={mine} alt="mine" width={10} height={10} />
           </Button>
@@ -164,6 +110,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {0}
           </Button>
@@ -181,6 +131,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -198,6 +152,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -215,6 +173,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -232,6 +194,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -249,6 +215,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -266,6 +236,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -283,6 +257,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -300,6 +278,10 @@ const Tiles = (field: any) => {
             style={xstyle}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -311,6 +293,10 @@ const Tiles = (field: any) => {
             style={style}
             square
             id={i + j}
+            onClick={() => {
+                revealedGrid[i][j] = true;
+                setRevealedGrid([...revealedGrid]);
+            }}
           >
             {grid[i][j]}
           </Button>
@@ -318,113 +304,8 @@ const Tiles = (field: any) => {
       }
     }
   }
+  console.log(revealedGrid);
   return <>{a}</>;
 };
 
-function App() {
-  const field = generateField(9, 9, 10);
-  const [field1, setField] = useState("");
-  return (
-    <div className="App">
-      <ResetStyles />
-      <ThemeProvider theme={themes.default}>
-        <AppBar>
-          <Toolbar style={{ justifyContent: "space-between" }}>
-            <Menu />
-            <div style={{ justifyContent: "right" }}>
-              <Button onClick={() => {}}>Visit Blog</Button>
-              <Button onClick={() => {}}>View in GitHub</Button>
-            </div>
-          </Toolbar>
-        </AppBar>
-        <div
-          style={{
-            padding: "8rem",
-          }}
-        >
-          <Window style={{ width: 380 }}>
-            <WindowHeader
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between"
-              }}
-            >
-              <span>IvoMinesweeper</span>
-              <Button
-                style={{ marginRight: "-6px", marginTop: "1px" }}
-                size={"sm"}
-                square
-              >
-                <span
-                  style={{ fontWeight: "bold", transform: "translateY(-1px)" }}
-                >
-                  x
-                </span>
-              </Button>
-            </WindowHeader>
-            <Toolbar>
-              <Button variant="menu" size="sm">
-                New Game
-              </Button>
-              <Button variant="menu" size="sm">
-                Restart
-              </Button>
-              <Button variant="menu" size="sm">
-                Solve
-              </Button>
-              {/* <Hourglass size={32} /> */}
-            </Toolbar>
-            <Table>
-              <TableHead>
-                <TableRow head>
-                  <TableHeadCell>Type</TableHeadCell>
-                  <TableHeadCell>Name</TableHeadCell>
-                  <TableHeadCell></TableHeadCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableDataCell style={{ textAlign: "center" }}>
-                    <Hourglass size={16} />
-                  </TableDataCell>
-                  <TableDataCell>Time Left</TableDataCell>
-                  <TableDataCell>4:50</TableDataCell>
-                </TableRow>
-                <TableRow>
-                  <TableDataCell style={{ textAlign: "center" }}>
-                    <img src={flag} alt="flag" width={16} height={16} />
-                  </TableDataCell>
-                  <TableDataCell>Flags</TableDataCell>
-                  <TableDataCell>5</TableDataCell>
-                </TableRow>
-                <TableRow>
-                  <TableDataCell style={{ textAlign: "center" }}>
-                    <img src={mine} alt="mine" width={16} height={16} />
-                  </TableDataCell>
-                  <TableDataCell>Mines</TableDataCell>
-                  <TableDataCell>10</TableDataCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <WindowContent>
-              <Tiles field={field} />
-            </WindowContent>
-          </Window>
-        </div>
-        <AppBar fixed={true} style={{"position": "fixed", "top": "unset", "bottom": "0px"}}>
-      <Toolbar style={{"justifyContent": "center"}}>
-        <Bar />
-        <Button variant={"default"} style={{"border": "none"}} square><img src={fbicon}/></Button>
-        <Button variant={"default"} style={{"border": "none"}} square><img src={twittericon}/></Button>
-        <Button variant={"default"} style={{"border": "none"}} square><img src={lnkedinicon}/></Button>
-        <Button variant={"default"} style={{"border": "none"}} square><img src={pinteresticon}/></Button>
-        <Bar />
-      </Toolbar>
-      </AppBar>
-      </ThemeProvider>
-    </div>
-  );
-}
-
-export default App;
+export default Grid;
