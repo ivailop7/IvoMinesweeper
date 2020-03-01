@@ -1,7 +1,13 @@
+@font-face{
+  font-family: "Visitor";
+  src: url('./assets/Visitor.otf'),
+  url('./assets/Visitor.eot'); /* IE */
+}
+
 body {
   margin: 0;
   background-color: #0a7e7e;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: -apple-system, BlinkMacSystemFont, 'Visitor', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -9,6 +15,6 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: 'Visitor', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
