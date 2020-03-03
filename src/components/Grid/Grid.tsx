@@ -4,12 +4,12 @@ import mine from "../../assets/mine.png";
 import flag from "../../assets/flag.png";
 import smiley from "../../assets/smiley.png";
 
-const generateEmptyField = (width: number, height: number) => {
+const generateEmptyField = (width: number, height: number, emptyItem: number | boolean) => {
   let field: any = [];
   for (let i = 0; i < height; i++) {
     field[i] = [];
     for (let j = 0; j < width; j++) {
-      field[i][j] = 0;
+      field[i][j] = emptyItem;
     }
   }
 
@@ -20,7 +20,7 @@ export const generateSolvedField = (
   height: number,
   numMines: number
 ) => {
-  let field: any = generateEmptyField(width, height);
+  let field: any = generateEmptyField(width, height, 0);
   // add mines
   for (let k = 0; k < numMines; k++) {
     const x = Math.floor(Math.random() * width);
@@ -59,253 +59,57 @@ export const generateSolvedField = (
   return [...field];
 };
 
+const numColorsMap: any = {
+  "x": null,
+  0: "lightgrey",
+  1: "blue",
+  2: "green",
+  3: "red",
+  4: "purple",
+  5: "maroon",
+  6: "turquoise",
+  7: "black",
+  8: "grey",   
+}
+
 const Grid = (props: any) => {
   let [grid, setGrid] = useState(generateSolvedField(props.height, props.width, props.numMines));
-  let [revealedGrid, setRevealedGrid] = useState(generateEmptyField(props.width, props.height));
+  let [revealedGrid, setRevealedGrid] = useState(generateEmptyField(props.width, props.height, false));
 
-  console.log("grid", grid);
+  const updateTileState = (i: number, j: number) => {
+    grid[i][j] === 0 && revealNeighbourZeros(i,j);
+    revealedGrid[i][j] = true;
+    setRevealedGrid([...revealedGrid]);
+  }
 
-  let a = [];
-  let style = {
-    backgroundColor: "lightgrey",
-    fontFamily: "Visitor",
-    color: "black"
-  };
+  const revealNeighbourZeros = (i: number, j: number) => {
+    
+  }
+
+  let buttons = [];
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
-      if (grid[i][j] === "x") {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "black",
-          // "border": "0",
-          padding: "0",
-          margin: "0"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + ":" + j}
-            size="md"
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
+      buttons.push(
+          <Button square id={i + ":" + j}
+            variant={revealedGrid[i][j] ? "flat" : "default"}
+            style={{
+              backgroundColor: "lightgrey",
+              fontFamily: "Visitor",
+              fontSize: "20px",
+              color: numColorsMap[grid[i][j]],
+              border: revealedGrid[i][j] ? "0" : null
             }}
+            onClick={() => updateTileState(i,j)}
           >
-            <img src={mine} alt="mine" width={10} height={10} />
+            {typeof(grid[i][j]) === "number" ?
+              grid[i][j] : 
+              <img src={mine} alt="mine" width={10} height={10} />
+            }
           </Button>
         );
-      } else if (grid[i][j] === 0) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "lightgrey",
-          border: "0"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {0}
-          </Button>
-        );
-      } else if (grid[i][j] === 1) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "blue",
-          fontSize: "20px"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      } else if (grid[i][j] === 2) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "green",
-          fontSize: "20px"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      } else if (grid[i][j] === 3) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "red",
-          fontSize: "20px"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      } else if (grid[i][j] === 4) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "purple",
-          fontSize: "20px"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      } else if (grid[i][j] === 5) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "maroon",
-          fontSize: "20px"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      } else if (grid[i][j] === 6) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "turquoise",
-          fontSize: "20px"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      } else if (grid[i][j] === 7) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "black",
-          fontSize: "20px"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      } else if (grid[i][j] === 8) {
-        let xstyle = {
-          backgroundColor: "lightgrey",
-          fontFamily: "Visitor",
-          color: "grey",
-          fontSize: "20px"
-        };
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={xstyle}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      } else {
-        a.push(
-          <Button
-            variant={grid[i][j] === 0 ? "flat" : "default"}
-            style={style}
-            square
-            id={i + j}
-            onClick={() => {
-                revealedGrid[i][j] = true;
-                setRevealedGrid([...revealedGrid]);
-            }}
-          >
-            {grid[i][j]}
-          </Button>
-        );
-      }
     }
   }
-  console.log(revealedGrid);
-  return <>{a}</>;
+  return <>{buttons}</>;
 };
 
 export default Grid;
