@@ -22,9 +22,9 @@ function Menu() {
           open={open}
           onClick={handleClose}
         >
-          <ListItem>👨‍💻 Change Size</ListItem>
-          <Divider />
-          <ListItem disabled>🔙 About</ListItem>
+          <ListItem>👨‍💻 How to play</ListItem>
+          <Divider/>
+          <ListItem>👨‍💻 About</ListItem>
         </List>
       )}
       <Button

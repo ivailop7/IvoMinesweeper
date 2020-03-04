@@ -5,10 +5,9 @@ import Header from "../Header/Header";
 import WindowFrame from "../Window/Window";
 import Footer from "../Footer/Footer";
 
-// Easy = 9x9, 10 mines
-// Medium = 16x16, 40 mines
-// Hard = 30x30, 160 mines
-// maybe "Shift + Click" to flag
+// When win a game: When all cells but the x are revealed
+// Left to do: lose game, win game, about, rules pop ups
+// Fix the out of order boxes when clicked,
 
 const ResetStyles = createGlobalStyle`
   ${reset}
