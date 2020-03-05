@@ -8,6 +8,7 @@ import Footer from "../Footer/Footer";
 // When win a game: When all cells but the x are revealed
 // Left to do: lose game, win game, about, rules pop ups
 // Fix the out of order boxes when clicked,
+// Make center window center itself
 
 const ResetStyles = createGlobalStyle`
   ${reset}

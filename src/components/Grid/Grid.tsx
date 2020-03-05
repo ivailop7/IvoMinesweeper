@@ -159,7 +159,7 @@ const Grid = React.forwardRef((props: any, ref) => {
 
   const renderTile = (i: number,j: number) => {
     if (revealedGrid[i][j] === 0) { // not opened
-      return "";
+      return "_";
     }
     else if (revealedGrid[i][j] === 1) { // opened
       if (typeof(grid[i][j]) === "number") {
@@ -184,7 +184,7 @@ const Grid = React.forwardRef((props: any, ref) => {
               backgroundColor: "lightgrey",
               fontFamily: "Visitor",
               fontSize: "20px",
-              color: numColorsMap[grid[i][j]],
+              color: revealedGrid[i][j] === 0 ? "lightgrey" : numColorsMap[grid[i][j]],
               border: revealedGrid[i][j] === 1 ? "0" : null
             }}
             onClick={() => updateTileState(i,j)}
@@ -195,6 +195,7 @@ const Grid = React.forwardRef((props: any, ref) => {
         );
     }
   }
+  
   return <>{buttons}</>;
 });
 

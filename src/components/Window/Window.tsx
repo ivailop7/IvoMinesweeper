@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Hourglass,
   Table,
   TableHeadCell,
   TableRow,
@@ -22,12 +21,12 @@ function WindowFrame() {
   let [numFlags, setNumFlags] = React.useState(0);
 
   return (
-    <div
-      style={{
-        padding: "8rem"
-      }}
-    >
-      <Window style={{ width: 380 }}>
+      <Window style={{ 
+        width: 360, position: "fixed",
+        zIndex: '-1',
+  top: "50%",
+  left: "50%",
+  transform: 'translate(-50%, -50%)', }}>
         <WindowHeader
           style={{
             display: "flex",
@@ -86,7 +85,6 @@ function WindowFrame() {
           <Grid ref={gridRef} height={9} width={9} numMines={10} setFlagsCount={setNumFlags}/>
         </WindowContent>
       </Window>
-    </div>
   );
 }
 
