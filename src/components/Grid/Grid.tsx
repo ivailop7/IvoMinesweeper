@@ -1,8 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Button } from "react95";
 import mine from "../../assets/mine.png";
 import flag from "../../assets/flag.png";
-import smiley from "../../assets/smiley.png";
 
 const generateFieldOf = (width: number, height: number, value: number) => {
   let field: any = [];
@@ -60,7 +59,7 @@ export const generateSolvedField = (
 };
 
 const numColorsMap: any = {
-  "x": null,
+  x: null,
   0: "lightgrey",
   1: "blue",
   2: "green",
@@ -69,17 +68,23 @@ const numColorsMap: any = {
   5: "maroon",
   6: "turquoise",
   7: "black",
-  8: "grey",   
-}
+  8: "grey"
+};
 
 const Grid = React.forwardRef((props: any, ref) => {
-  let [grid, setGrid] = useState(generateSolvedField(props.height, props.width, props.numMines));
-  let [revealedGrid, setRevealedGrid] = useState(generateFieldOf(props.width, props.height, 0));
+  let [grid, setGrid] = useState(
+    generateSolvedField(props.height, props.width, props.numMines)
+  );
+  let [revealedGrid, setRevealedGrid] = useState(
+    generateFieldOf(props.width, props.height, 0)
+  );
   let [numFlags, setNumFlags] = useState(0);
 
   React.useImperativeHandle(ref, () => ({
     newGame() {
-      setGrid([...generateSolvedField(props.height, props.width, props.numMines)]);
+      setGrid([
+        ...generateSolvedField(props.height, props.width, props.numMines)
+      ]);
       setRevealedGrid([...generateFieldOf(props.width, props.height, 0)]);
     },
     restartGame() {
@@ -87,115 +92,139 @@ const Grid = React.forwardRef((props: any, ref) => {
     },
     solveGame() {
       setRevealedGrid([...generateFieldOf(props.width, props.height, 1)]);
-    },
+    }
   }));
+
+  const gameOver = (i: number, j: number) => {
+    console.log("Game Over");
+  };
+
   const updateTileState = (i: number, j: number) => {
-    grid[i][j] === 0 && revealNeighbourZeros(i,j);
+    grid[i][j] === 0 && revealNeighbourZeros(i, j);
+    grid[i][j] === "x" && gameOver(i, j);
     revealedGrid[i][j] = 1;
     setRevealedGrid([...revealedGrid]);
-  }
+  };
 
   const toggleFlag = (i: number, j: number) => {
     if (revealedGrid[i][j] === 0) {
       revealedGrid[i][j] = 2;
       setNumFlags(++numFlags);
-    }
-    else if (revealedGrid[i][j] === 2) {
+    } else if (revealedGrid[i][j] === 2) {
       revealedGrid[i][j] = 0;
-      setNumFlags(--numFlags);      
+      setNumFlags(--numFlags);
     }
-    
+
     props.setFlagsCount(numFlags);
     setRevealedGrid([...revealedGrid]);
-  }
+  };
 
   const revealNeighbourZeros = (x: number, y: number) => {
-    let adjacentCellsToReveal = [[x,y]];
+    let adjacentCellsToReveal = [[x, y]];
     do {
-      let [i,j] = adjacentCellsToReveal[0];
+      let [i, j] = adjacentCellsToReveal[0];
       // reveal top left
-      if (grid[i - 1] && grid[i - 1][j - 1] === 0 && revealedGrid[i - 1][j - 1] === 0) {
-        revealedGrid[i - 1][j - 1]=1;
+      if (
+        grid[i - 1] &&
+        grid[i - 1][j - 1] === 0 &&
+        revealedGrid[i - 1][j - 1] === 0
+      ) {
+        revealedGrid[i - 1][j - 1] = 1;
         adjacentCellsToReveal.push([i - 1, j - 1]);
       }
       // reveal top
       if (grid[i - 1] && grid[i - 1][j] === 0 && revealedGrid[i - 1][j] === 0) {
-        revealedGrid[i - 1][j]=1;
+        revealedGrid[i - 1][j] = 1;
         adjacentCellsToReveal.push([i - 1, j]);
       }
       // reveal top right
-      if (grid[i - 1] && grid[i - 1][j + 1] === 0 && revealedGrid[i - 1][j + 1] === 0) {
-        revealedGrid[i - 1][j + 1]=1;
+      if (
+        grid[i - 1] &&
+        grid[i - 1][j + 1] === 0 &&
+        revealedGrid[i - 1][j + 1] === 0
+      ) {
+        revealedGrid[i - 1][j + 1] = 1;
         adjacentCellsToReveal.push([i - 1, j + 1]);
       }
       // reveal right
-      if (grid[i] && grid[i][j + 1] === 0 && revealedGrid[i][j + 1] === 0) { 
-        revealedGrid[i][j + 1]=1;
+      if (grid[i] && grid[i][j + 1] === 0 && revealedGrid[i][j + 1] === 0) {
+        revealedGrid[i][j + 1] = 1;
         adjacentCellsToReveal.push([i, j + 1]);
       }
       // reveal bottom right
-      if (grid[i + 1] && grid[i + 1][j + 1] === 0 && revealedGrid[i + 1][j + 1] === 0) {
-        revealedGrid[i + 1][j + 1]=1;
+      if (
+        grid[i + 1] &&
+        grid[i + 1][j + 1] === 0 &&
+        revealedGrid[i + 1][j + 1] === 0
+      ) {
+        revealedGrid[i + 1][j + 1] = 1;
         adjacentCellsToReveal.push([i + 1, j + 1]);
       }
       // reveal bottom
       if (grid[i + 1] && grid[i + 1][j] === 0 && revealedGrid[i + 1][j] === 0) {
-        revealedGrid[i + 1][j]=1;
+        revealedGrid[i + 1][j] = 1;
         adjacentCellsToReveal.push([i + 1, j]);
       }
       // reveal bottom left
-      if (grid[i + 1] && grid[i + 1][j - 1] === 0 && revealedGrid[i + 1][j - 1] === 0) {
-        revealedGrid[i + 1][j - 1]=1;
+      if (
+        grid[i + 1] &&
+        grid[i + 1][j - 1] === 0 &&
+        revealedGrid[i + 1][j - 1] === 0
+      ) {
+        revealedGrid[i + 1][j - 1] = 1;
         adjacentCellsToReveal.push([i + 1, j - 1]);
       }
       // reveal left
       if (grid[i][j - 1] === 0 && revealedGrid[i][j - 1] === 0) {
-        revealedGrid[i][j - 1]=1;
+        revealedGrid[i][j - 1] = 1;
         adjacentCellsToReveal.push([i, j - 1]);
       }
       adjacentCellsToReveal.shift();
-    } while (adjacentCellsToReveal.length > 0)
-  }
+    } while (adjacentCellsToReveal.length > 0);
+  };
 
-  const renderTile = (i: number,j: number) => {
-    if (revealedGrid[i][j] === 0) { // not opened
+  const renderTile = (i: number, j: number) => {
+    if (revealedGrid[i][j] === 0) {
+      // not opened
       return "_";
-    }
-    else if (revealedGrid[i][j] === 1) { // opened
-      if (typeof(grid[i][j]) === "number") {
+    } else if (revealedGrid[i][j] === 1) {
+      // opened
+      if (typeof grid[i][j] === "number") {
         return grid[i][j];
-      }
-      else {
+      } else {
         return <img src={mine} alt="mine" width={10} height={10} />;
       }
-    }
-    else if (revealedGrid[i][j] === 2) { // flagged
+    } else if (revealedGrid[i][j] === 2) {
+      // flagged
       return <img src={flag} alt="flag" width={10} height={10} />;
     }
-  }
+  };
 
   let buttons = [];
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
       buttons.push(
-          <Button square id={i + ":" + j}
-            variant={revealedGrid[i][j] === 1 ? "flat" : "default"}
-            style={{
-              backgroundColor: "lightgrey",
-              fontFamily: "Visitor",
-              fontSize: "20px",
-              color: revealedGrid[i][j] === 0 ? "lightgrey" : numColorsMap[grid[i][j]],
-              border: revealedGrid[i][j] === 1 ? "0" : null
-            }}
-            onClick={() => updateTileState(i,j)}
-            onContextMenu={() => toggleFlag(i,j)}
-          >
-            {renderTile(i,j)}
-          </Button>
-        );
+        <Button
+          square
+          id={i + ":" + j}
+          variant={revealedGrid[i][j] === 1 ? "flat" : "default"}
+          style={{
+            backgroundColor: "lightgrey",
+            fontFamily: "Visitor",
+            fontSize: "20px",
+            color:
+              revealedGrid[i][j] === 0 ? "lightgrey" : numColorsMap[grid[i][j]],
+            border: revealedGrid[i][j] === 1 ? "0" : null
+          }}
+          onClick={() => updateTileState(i, j)}
+          onContextMenu={() => toggleFlag(i, j)}
+        >
+          {renderTile(i, j)}
+        </Button>
+      );
     }
   }
-  
+
   return <>{buttons}</>;
 });
 
