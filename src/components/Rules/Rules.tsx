@@ -1,8 +1,7 @@
 import React from "react";
 import { Window, WindowHeader, WindowContent, Button } from "react95";
-import flag from "../../assets/flag.png";
 
-function AboutPopup(props: any) {
+function RulesPopup(props: any) {
   return (
     <div style={{ "boxShadow": "5px 10px #888888" }}>
     <Window
@@ -22,7 +21,7 @@ function AboutPopup(props: any) {
           justifyContent: "space-between"
         }}
       >
-        <span>About</span>
+        <span>How To Play</span>
         <Button
           style={{ marginRight: "-6px", marginTop: "1px" }}
           size={"sm"}
@@ -35,17 +34,21 @@ function AboutPopup(props: any) {
         </Button>
       </WindowHeader>
       <WindowContent>
-        <div style={{fontWeight: "bold"}}><img src={flag} height={24} width={24} /> IvoMinesweeper</div>
+        <div style={{fontWeight: "bold"}}>Controls</div>
+        <br />
+        Left-click to open a cell.
+        <br />
+        Right-click to toggle a flag on a cell. (Sorry mobile users.)
         <br />
         <br />
+        <div style={{fontWeight: "bold"}}>Goal</div>
         <br />
-        This game was developed as a part of a learning exercise. 
+        When you open a cell, it reveals a number that shows how many mines are around that cell, including all diagonals.
+        <br/>
+        Clicking on a cell without a number, will reveal all adjacent empty cells. The goal is to reveal all cells, without clicking on a mine.
         <br />
         <br />
-        You can read more about the building process in this <a href="TODO" style={{"textDecoration": "underline"}}>Blog Post</a>.
-        <br />
-        <br />
-        Ivaylo Pavlov (March 2020)
+        Good Luck!
         <br />
         <br />
         <Button onClick={() => props.closeFunc()}>Close</Button>
@@ -55,4 +58,4 @@ function AboutPopup(props: any) {
   );
 }
 
-export default AboutPopup;
+export default RulesPopup;

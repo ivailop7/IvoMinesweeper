@@ -5,10 +5,8 @@ import Header from "../Header/Header";
 import WindowFrame from "../Window/Window";
 import Footer from "../Footer/Footer";
 
-// When win a game: When all cells but the x are revealed
 // Left to do: lose game, win game, about, rules pop ups
-// Fix the out of order boxes when clicked,
-// Make center window center itself
+// update link in the about to blog
 
 const ResetStyles = createGlobalStyle`
   ${reset}

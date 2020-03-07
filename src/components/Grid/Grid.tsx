@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react95";
+import GameOver from "../GameOver/GameOver";
+import Congrats from "../Congrats/Congrats";
 import mine from "../../assets/mine.png";
 import flag from "../../assets/flag.png";
 
@@ -72,13 +74,13 @@ const numColorsMap: any = {
 };
 
 const Grid = React.forwardRef((props: any, ref) => {
-  let [grid, setGrid] = useState(
-    generateSolvedField(props.height, props.width, props.numMines)
-  );
-  let [revealedGrid, setRevealedGrid] = useState(
-    generateFieldOf(props.width, props.height, 0)
-  );
+  let [grid, setGrid] = useState(generateSolvedField(props.height, props.width, props.numMines));
+  let [revealedGrid, setRevealedGrid] = useState(generateFieldOf(props.width, props.height, 0));
+  let [numRevealedTiles, setNumRevealedTiles] = useState(0);
   let [numFlags, setNumFlags] = useState(0);
+
+  const [openCongrats, setOpenCongrats] = React.useState(false);
+  const [openGameOver, setOpenGameOver] = React.useState(false);
 
   React.useImperativeHandle(ref, () => ({
     newGame() {
@@ -95,15 +97,23 @@ const Grid = React.forwardRef((props: any, ref) => {
     }
   }));
 
-  const gameOver = (i: number, j: number) => {
-    console.log("Game Over");
+  const gameOver = () => {
+    setOpenGameOver(true);
+  };
+
+  const winGame = () => {
+    setOpenCongrats(true);
   };
 
   const updateTileState = (i: number, j: number) => {
+    if (revealedGrid[i][j] === 1) { return; }
+    
     grid[i][j] === 0 && revealNeighbourZeros(i, j);
-    grid[i][j] === "x" && gameOver(i, j);
+    grid[i][j] === "x" && gameOver();
     revealedGrid[i][j] = 1;
+    setNumRevealedTiles(++numRevealedTiles);
     setRevealedGrid([...revealedGrid]);
+    numRevealedTiles === 71 && winGame();
   };
 
   const toggleFlag = (i: number, j: number) => {
@@ -130,11 +140,13 @@ const Grid = React.forwardRef((props: any, ref) => {
         revealedGrid[i - 1][j - 1] === 0
       ) {
         revealedGrid[i - 1][j - 1] = 1;
+        setNumRevealedTiles(++numRevealedTiles);
         adjacentCellsToReveal.push([i - 1, j - 1]);
       }
       // reveal top
       if (grid[i - 1] && grid[i - 1][j] === 0 && revealedGrid[i - 1][j] === 0) {
         revealedGrid[i - 1][j] = 1;
+        setNumRevealedTiles(++numRevealedTiles);
         adjacentCellsToReveal.push([i - 1, j]);
       }
       // reveal top right
@@ -144,11 +156,13 @@ const Grid = React.forwardRef((props: any, ref) => {
         revealedGrid[i - 1][j + 1] === 0
       ) {
         revealedGrid[i - 1][j + 1] = 1;
+        setNumRevealedTiles(++numRevealedTiles);
         adjacentCellsToReveal.push([i - 1, j + 1]);
       }
       // reveal right
       if (grid[i] && grid[i][j + 1] === 0 && revealedGrid[i][j + 1] === 0) {
         revealedGrid[i][j + 1] = 1;
+        setNumRevealedTiles(++numRevealedTiles);
         adjacentCellsToReveal.push([i, j + 1]);
       }
       // reveal bottom right
@@ -158,11 +172,13 @@ const Grid = React.forwardRef((props: any, ref) => {
         revealedGrid[i + 1][j + 1] === 0
       ) {
         revealedGrid[i + 1][j + 1] = 1;
+        setNumRevealedTiles(++numRevealedTiles);
         adjacentCellsToReveal.push([i + 1, j + 1]);
       }
       // reveal bottom
       if (grid[i + 1] && grid[i + 1][j] === 0 && revealedGrid[i + 1][j] === 0) {
         revealedGrid[i + 1][j] = 1;
+        setNumRevealedTiles(++numRevealedTiles);
         adjacentCellsToReveal.push([i + 1, j]);
       }
       // reveal bottom left
@@ -172,15 +188,18 @@ const Grid = React.forwardRef((props: any, ref) => {
         revealedGrid[i + 1][j - 1] === 0
       ) {
         revealedGrid[i + 1][j - 1] = 1;
+        setNumRevealedTiles(++numRevealedTiles);
         adjacentCellsToReveal.push([i + 1, j - 1]);
       }
       // reveal left
       if (grid[i][j - 1] === 0 && revealedGrid[i][j - 1] === 0) {
         revealedGrid[i][j - 1] = 1;
+        setNumRevealedTiles(++numRevealedTiles);
         adjacentCellsToReveal.push([i, j - 1]);
       }
       adjacentCellsToReveal.shift();
     } while (adjacentCellsToReveal.length > 0);
+    setNumRevealedTiles(--numRevealedTiles);
   };
 
   const renderTile = (i: number, j: number) => {
@@ -225,7 +244,11 @@ const Grid = React.forwardRef((props: any, ref) => {
     }
   }
 
-  return <>{buttons}</>;
+  return <>
+    {openCongrats && <Congrats closeFunc={() => setOpenCongrats(false)}/>}
+    {openGameOver && <GameOver closeFunc={() => setOpenGameOver(false)}/>}
+    {buttons}
+  </>;
 });
 
 export default Grid;

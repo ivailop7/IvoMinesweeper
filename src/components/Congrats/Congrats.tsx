@@ -1,15 +1,22 @@
 import React from "react";
 import { Window, WindowHeader, WindowContent, Button } from "react95";
-import flag from "../../assets/flag.png";
+import smiley from "../../assets/smiley.png";
 
-function AboutPopup(props: any) {
+function CongratsPopup(props: any) {
+    const shareOnFb = () => {
+        const sharerURL = `https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fminesweeper.ivaylopavlov.com&
+        title=I+played+IvoMinesweeper`;
+        window.open( sharerURL, 'facebook-share-dialog', 'width=626,height=436');
+        return  false;
+    }
+
   return (
     <div style={{ "boxShadow": "5px 10px #888888" }}>
     <Window
       style={{
         width: 380,
         position: "fixed",
-        zIndex: "-1",
+        zIndex: "9999",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)"
@@ -22,7 +29,7 @@ function AboutPopup(props: any) {
           justifyContent: "space-between"
         }}
       >
-        <span>About</span>
+        <span>You won!</span>
         <Button
           style={{ marginRight: "-6px", marginTop: "1px" }}
           size={"sm"}
@@ -35,17 +42,17 @@ function AboutPopup(props: any) {
         </Button>
       </WindowHeader>
       <WindowContent>
-        <div style={{fontWeight: "bold"}}><img src={flag} height={24} width={24} /> IvoMinesweeper</div>
+        <img src={smiley} height={24} width={24} />
+        <div style={{fontWeight: "bold"}}>Congrats! You won!</div>
         <br />
         <br />
-        <br />
-        This game was developed as a part of a learning exercise. 
-        <br />
-        <br />
-        You can read more about the building process in this <a href="TODO" style={{"textDecoration": "underline"}}>Blog Post</a>.
+        You can close this popup and click "New Game", if you want to play again.
         <br />
         <br />
-        Ivaylo Pavlov (March 2020)
+        Please consider sharing the game with others who might enjoy it.
+        <br />
+        <br />
+        <Button onClick={() => shareOnFb()}>Share Your Win on Facebook</Button>
         <br />
         <br />
         <Button onClick={() => props.closeFunc()}>Close</Button>
@@ -55,4 +62,4 @@ function AboutPopup(props: any) {
   );
 }
 
-export default AboutPopup;
+export default CongratsPopup;
