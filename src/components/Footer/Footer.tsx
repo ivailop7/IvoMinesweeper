@@ -30,12 +30,12 @@ function Menu() {
           onClick={handleClose}
         >
           <ListItem onClick={() => setOpenRules(true)}>How to Play</ListItem>
-          <Divider/>
+          <Divider />
           <ListItem onClick={() => setOpenAbout(true)}>About</ListItem>
         </List>
       )}
-      {openAbout && <About closeFunc={() => setOpenAbout(false)}/>}
-      {openRules && <Rules closeFunc={() => setOpenRules(false)}/>}
+      {openAbout && <About closeFunc={() => setOpenAbout(false)} />}
+      {openRules && <Rules closeFunc={() => setOpenRules(false)} />}
       <Button
         onClick={handleClick}
         active={open}
@@ -53,26 +53,39 @@ function Menu() {
   );
 }
 
-
 function Footer() {
   return (
     <AppBar
       fixed={true}
       style={{ position: "fixed", top: "unset", bottom: "0px" }}
     >
-      
       <Toolbar style={{ justifyContent: "left" }}>
-        <Menu/>
+        <Menu />
         <Bar />
-        
-        <Button variant={"default"} style={{ border: "none" }} square onClick={() => window.open("http://sudoku.ivaylopavlov.com/")}>
-        <img src={sudoku} width={32} height={32}/>
+
+        <Button
+          variant={"default"}
+          style={{ border: "none" }}
+          square
+          onClick={() => window.open("http://sudoku.ivaylopavlov.com/")}
+        >
+          <img src={sudoku} width={32} height={32} />
         </Button>
-        <Button variant={"default"} style={{ border: "none" }} square onClick={() => window.open("http://tetris.ivaylopavlov.com/")}>
-        <img src={tetris} width={32} height={32}/>
+        <Button
+          variant={"default"}
+          style={{ border: "none" }}
+          square
+          onClick={() => window.open("http://tetris.ivaylopavlov.com/")}
+        >
+          <img src={tetris} width={32} height={32} />
         </Button>
-        <Button variant={"default"} style={{ border: "none" }} square onClick={() => window.open("http://pegsolitaire.ivaylopavlov.com/")}>
-          <img src={pegsolitaire} width={32} height={32}/>
+        <Button
+          variant={"default"}
+          style={{ border: "none" }}
+          square
+          onClick={() => window.open("http://pegsolitaire.ivaylopavlov.com/")}
+        >
+          <img src={pegsolitaire} width={32} height={32} />
         </Button>
         <Bar />
       </Toolbar>

@@ -5,12 +5,7 @@ import Header from "../Header/Header";
 import WindowFrame from "../Window/Window";
 import Footer from "../Footer/Footer";
 
-// Left to do: lose game, win game, about, rules pop ups
-// update link in the about to blog
-
-const ResetStyles = createGlobalStyle`
-  ${reset}
-`;
+const ResetStyles = createGlobalStyle`${reset}`;
 
 function App() {
   return (

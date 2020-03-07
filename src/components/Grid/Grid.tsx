@@ -16,6 +16,7 @@ const generateFieldOf = (width: number, height: number, value: number) => {
 
   return [...field];
 };
+
 export const generateSolvedField = (
   width: number,
   height: number,
@@ -23,7 +24,7 @@ export const generateSolvedField = (
 ) => {
   let field: any = generateFieldOf(width, height, 0);
   // add mines
-  for (let k = 0; k < numMines; k++) {
+  for (let k = 0; k <= numMines; k++) {
     const x = Math.floor(Math.random() * width);
     const y = Math.floor(Math.random() * height);
     field[x][y] = "x";
@@ -74,8 +75,12 @@ const numColorsMap: any = {
 };
 
 const Grid = React.forwardRef((props: any, ref) => {
-  let [grid, setGrid] = useState(generateSolvedField(props.height, props.width, props.numMines));
-  let [revealedGrid, setRevealedGrid] = useState(generateFieldOf(props.width, props.height, 0));
+  let [grid, setGrid] = useState(
+    generateSolvedField(props.height, props.width, props.numMines)
+  );
+  let [revealedGrid, setRevealedGrid] = useState(
+    generateFieldOf(props.width, props.height, 0)
+  );
   let [numRevealedTiles, setNumRevealedTiles] = useState(0);
   let [numFlags, setNumFlags] = useState(0);
 
@@ -99,6 +104,7 @@ const Grid = React.forwardRef((props: any, ref) => {
 
   const gameOver = () => {
     setOpenGameOver(true);
+    setRevealedGrid([...generateFieldOf(props.width, props.height, 1)]);
   };
 
   const winGame = () => {
@@ -106,14 +112,22 @@ const Grid = React.forwardRef((props: any, ref) => {
   };
 
   const updateTileState = (i: number, j: number) => {
-    if (revealedGrid[i][j] === 1) { return; }
-    
-    grid[i][j] === 0 && revealNeighbourZeros(i, j);
-    grid[i][j] === "x" && gameOver();
+    if (revealedGrid[i][j] === 1) {
+      return;
+    }
+
+    if (grid[i][j] === 0) {
+      revealNeighbourZeros(i, j);
+    }
+    if (grid[i][j] === "x") {
+      gameOver();
+      return;
+    }
     revealedGrid[i][j] = 1;
     setNumRevealedTiles(++numRevealedTiles);
     setRevealedGrid([...revealedGrid]);
-    numRevealedTiles === 71 && winGame();
+    numRevealedTiles === props.width * props.height - props.numMines &&
+      winGame();
   };
 
   const toggleFlag = (i: number, j: number) => {
@@ -244,11 +258,13 @@ const Grid = React.forwardRef((props: any, ref) => {
     }
   }
 
-  return <>
-    {openCongrats && <Congrats closeFunc={() => setOpenCongrats(false)}/>}
-    {openGameOver && <GameOver closeFunc={() => setOpenGameOver(false)}/>}
-    {buttons}
-  </>;
+  return (
+    <>
+      {openCongrats && <Congrats closeFunc={() => setOpenCongrats(false)} />}
+      {openGameOver && <GameOver closeFunc={() => setOpenGameOver(false)} />}
+      {buttons}
+    </>
+  );
 });
 
 export default Grid;

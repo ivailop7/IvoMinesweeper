@@ -21,70 +21,92 @@ function WindowFrame() {
   let [numFlags, setNumFlags] = React.useState(0);
 
   return (
-      <Window style={{ 
-        width: 360, position: "fixed",
-        zIndex: '-1',
-  top: "50%",
-  left: "50%",
-  transform: 'translate(-50%, -50%)', }}>
-        <WindowHeader
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between"
-          }}
+    <Window
+      style={{
+        width: 360,
+        position: "fixed",
+        zIndex: "-1",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)"
+      }}
+    >
+      <WindowHeader
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
+        <span>IvoMinesweeper</span>
+        <Button
+          style={{ marginRight: "-6px", marginTop: "1px" }}
+          size={"sm"}
+          square
         >
-          <span>IvoMinesweeper</span>
-          <Button
-            style={{ marginRight: "-6px", marginTop: "1px" }}
-            size={"sm"}
-            square
-          >
-            <span style={{ fontWeight: "bold", transform: "translateY(-1px)" }}>
-              x
-            </span>
-          </Button>
-        </WindowHeader>
-        <Toolbar>
-          <Button variant="menu" size="sm" onClick={() => gridRef.current.newGame()}>
-            New Game
-          </Button>
-          <Button variant="menu" size="sm" onClick={() => gridRef.current.restartGame()}>
-            Restart
-          </Button>
-          <Button variant="menu" size="sm" onClick={() => gridRef.current.solveGame()}>
-            Solve
-          </Button>
-        </Toolbar>
-        <Table>
-          <TableHead>
-            <TableRow head>
-              <TableHeadCell>Type</TableHeadCell>
-              <TableHeadCell>Name</TableHeadCell>
-              <TableHeadCell></TableHeadCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableDataCell style={{ textAlign: "center" }}>
-                <img src={flag} alt="flag" width={16} height={16} />
-              </TableDataCell>
-              <TableDataCell>Flags</TableDataCell>
-              <TableDataCell>{numFlags}</TableDataCell>
-            </TableRow>
-            <TableRow>
-              <TableDataCell style={{ textAlign: "center" }}>
-                <img src={mine} alt="mine" width={16} height={16} />
-              </TableDataCell>
-              <TableDataCell>Mines</TableDataCell>
-              <TableDataCell>10</TableDataCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-        <WindowContent>
-          <Grid ref={gridRef} height={9} width={9} numMines={10} setFlagsCount={setNumFlags}/>
-        </WindowContent>
-      </Window>
+          <span style={{ fontWeight: "bold", transform: "translateY(-1px)" }}>
+            x
+          </span>
+        </Button>
+      </WindowHeader>
+      <Toolbar>
+        <Button
+          variant="menu"
+          size="sm"
+          onClick={() => gridRef.current.newGame()}
+        >
+          New Game
+        </Button>
+        <Button
+          variant="menu"
+          size="sm"
+          onClick={() => gridRef.current.restartGame()}
+        >
+          Restart
+        </Button>
+        <Button
+          variant="menu"
+          size="sm"
+          onClick={() => gridRef.current.solveGame()}
+        >
+          Solve
+        </Button>
+      </Toolbar>
+      <Table>
+        <TableHead>
+          <TableRow head>
+            <TableHeadCell>Type</TableHeadCell>
+            <TableHeadCell>Name</TableHeadCell>
+            <TableHeadCell></TableHeadCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableDataCell style={{ textAlign: "center" }}>
+              <img src={flag} alt="flag" width={16} height={16} />
+            </TableDataCell>
+            <TableDataCell>Flags</TableDataCell>
+            <TableDataCell>{numFlags}</TableDataCell>
+          </TableRow>
+          <TableRow>
+            <TableDataCell style={{ textAlign: "center" }}>
+              <img src={mine} alt="mine" width={16} height={16} />
+            </TableDataCell>
+            <TableDataCell>Mines</TableDataCell>
+            <TableDataCell>10</TableDataCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      <WindowContent>
+        <Grid
+          ref={gridRef}
+          height={9}
+          width={9}
+          numMines={10}
+          setFlagsCount={setNumFlags}
+        />
+      </WindowContent>
+    </Window>
   );
 }
 
