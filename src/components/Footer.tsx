@@ -1,11 +1,11 @@
 import React from "react";
 import { List, Divider, ListItem, Bar, Button, Toolbar, AppBar } from "react95";
-import About from "../About/About";
-import Rules from "../Rules/Rules";
-import smiley from "../../assets/smiley.png";
-import pegsolitaire from "../../assets/peg_solitaire.png";
-import sudoku from "../../assets/sudoku.png";
-import tetris from "../../assets/tetris.png";
+import About from "./About";
+import Rules from "./Rules";
+import smiley from "../assets/smiley.png";
+import pegsolitaire from "../assets/peg_solitaire.png";
+import sudoku from "../assets/sudoku.png";
+import tetris from "../assets/tetris.png";
 
 function Menu() {
   const [open, setOpen] = React.useState(false);

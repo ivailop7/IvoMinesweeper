@@ -12,9 +12,9 @@ import {
   Button,
   Toolbar
 } from "react95";
-import mine from "../../assets/mine.png";
-import flag from "../../assets/flag.png";
-import Grid from "../Grid/Grid";
+import mine from "../assets/mine.png";
+import flag from "../assets/flag.png";
+import Grid from "./Grid";
 
 function WindowFrame() {
   const gridRef: any = React.useRef();

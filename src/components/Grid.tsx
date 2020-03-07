@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "react95";
-import GameOver from "../GameOver/GameOver";
-import Congrats from "../Congrats/Congrats";
-import mine from "../../assets/mine.png";
-import flag from "../../assets/flag.png";
+import GameOver from "./GameOver";
+import Congrats from "./Congrats";
+import mine from "../assets/mine.png";
+import flag from "../assets/flag.png";
 
 const generateFieldOf = (width: number, height: number, value: number) => {
   let field: any = [];

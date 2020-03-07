@@ -1,21 +1,20 @@
 import React from "react";
 import { Window, WindowHeader, WindowContent, Button } from "react95";
-import smiley from "../../assets/smiley.png";
 import { popupWindowStyle, popupWindowHeaderStyle, closeWindowButtonStyle } from "../common-styles";
+import mine from "../assets/mine.png";
 
-function CongratsPopup(props: any) {
+function GameOverPopup(props: any) {
   const shareOnFb = () => {
     const sharerURL = `https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fminesweeper.ivaylopavlov.com&
         title=I+played+IvoMinesweeper`;
     window.open(sharerURL, "facebook-share-dialog", "width=626,height=436");
     return false;
   };
-
   return (
     <div style={{ boxShadow: "5px 10px #888888" }}>
       <Window style={popupWindowStyle}>
         <WindowHeader style={popupWindowHeaderStyle}>
-          <span>You won!</span>
+          <span>Game Over!</span>
           <Button
             style={closeWindowButtonStyle}
             size={"sm"}
@@ -28,19 +27,15 @@ function CongratsPopup(props: any) {
           </Button>
         </WindowHeader>
         <WindowContent>
-          <img src={smiley} height={24} width={24} />
-          <div style={{ fontWeight: "bold" }}>Congrats! You won!</div>
+          <img src={mine} height={24} width={24} />
+          <div style={{ fontWeight: "bold" }}>Sorry! You lost. Try again!</div>
           <br />
           <br />
-          You can close this popup and click "New Game", if you want to play
-          again.
-          <br />
-          <br />
-          Please consider sharing the game with others who might enjoy it.
+          You can close this popup and click "New Game" for a fresh start.
           <br />
           <br />
           <Button onClick={() => shareOnFb()}>
-            Share Your Win on Facebook
+            Share The Game on Facebook
           </Button>
           <br />
           <br />
@@ -51,4 +46,4 @@ function CongratsPopup(props: any) {
   );
 }
 
-export default CongratsPopup;
+export default GameOverPopup;

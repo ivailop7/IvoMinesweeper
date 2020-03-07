@@ -1,7 +1,7 @@
 import React from "react";
 import { Window, WindowHeader, WindowContent, Button } from "react95";
 import { popupWindowStyle, popupWindowHeaderStyle, closeWindowButtonStyle } from "../common-styles";
-import flag from "../../assets/flag.png";
+import flag from "../assets/flag.png";
 
 function AboutPopup(props: any) {
   return (

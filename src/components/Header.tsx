@@ -1,11 +1,10 @@
 import React from "react";
 import { List, ListItem, Button, Toolbar, AppBar } from "react95";
-
-import fbicon from "../../assets/facebook.png";
-import pinteresticon from "../../assets/pinterest.png";
-import lnkedinicon from "../../assets/linkedin.png";
-import twittericon from "../../assets/twitter.png";
-import share from "../../assets/share_icon.png";
+import fbicon from "../assets/facebook.png";
+import pinteresticon from "../assets/pinterest.png";
+import lnkedinicon from "../assets/linkedin.png";
+import twittericon from "../assets/twitter.png";
+import share from "../assets/share_icon.png";
 
 function ShareMenu() {
   const [open, setOpen] = React.useState(false);
@@ -81,8 +80,8 @@ function Header() {
       <Toolbar style={{ justifyContent: "space-between" }}>
         <ShareMenu />
         <div style={{ justifyContent: "right" }}>
-          <Button onClick={() => {}}>Visit Blog</Button>
-          <Button onClick={() => {}}>View in GitHub</Button>
+          <Button onClick={() => window.open("https://www.ivaylopavlov.com")}>Visit Blog</Button>
+          <Button onClick={() => window.open("https://github.com/ivailop7/IvoMinesweeper")}>View in GitHub</Button>
         </div>
       </Toolbar>
     </AppBar>
