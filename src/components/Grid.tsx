@@ -47,27 +47,21 @@ export const generateSolvedField = (
     for (let j = 0; j < width; j++) {
       if (field[i][j] === "x") {
         // increment top left
-        if (field[i - 1] && typeof field[i - 1][j - 1] === "number")
-          field[i - 1][j - 1]++;
+        if (typeof field[i - 1]?.[j - 1] === "number") field[i - 1][j - 1]++;
         // increment top
-        if (field[i - 1] && typeof field[i - 1][j] === "number")
-          field[i - 1][j]++;
+        if (typeof field[i - 1]?.[j] === "number") field[i - 1][j]++;
         // increment top right
-        if (field[i - 1] && typeof field[i - 1][j + 1] === "number")
-          field[i - 1][j + 1]++;
+        if (typeof field[i - 1]?.[j + 1] === "number") field[i - 1][j + 1]++;
         // increment right
-        if (typeof field[i][j + 1] === "number") field[i][j + 1]++;
+        if (typeof field[i]?.[j + 1] === "number") field[i][j + 1]++;
         // increment bottom right
-        if (field[i + 1] && typeof field[i + 1][j + 1] === "number")
-          field[i + 1][j + 1]++;
+        if (typeof field[i + 1]?.[j + 1] === "number") field[i + 1][j + 1]++;
         // increment bottom
-        if (field[i + 1] && typeof field[i + 1][j] === "number")
-          field[i + 1][j]++;
+        if (typeof field[i + 1]?.[j] === "number") field[i + 1][j]++;
         // increment bottom left
-        if (field[i + 1] && typeof field[i + 1][j - 1] === "number")
-          field[i + 1][j - 1]++;
+        if (typeof field[i + 1]?.[j - 1] === "number") field[i + 1][j - 1]++;
         // increment left
-        if (typeof field[i][j - 1] === "number") field[i][j - 1]++;
+        if (typeof field[i]?.[j - 1] === "number") field[i][j - 1]++;
       }
     }
   }
@@ -85,6 +79,8 @@ const Grid = React.forwardRef((props: any, ref) => {
 
   React.useImperativeHandle(ref, () => ({
     newGame() {
+      setNumFlags(0);
+      props.setFlagsCount(0);
       setGrid([
         ...generateSolvedField(props.height, props.width, props.numMines)
       ]);
@@ -144,68 +140,52 @@ const Grid = React.forwardRef((props: any, ref) => {
     do {
       let [i, j] = adjacentCellsToReveal[0];
       // reveal top left
-      if (
-        grid[i - 1] &&
-        grid[i - 1][j - 1] === 0 &&
-        revealedGrid[i - 1][j - 1] === 0
-      ) {
+      if (grid[i - 1]?.[j - 1] >= 0 && revealedGrid[i - 1]?.[j - 1] === 0) {
         revealedGrid[i - 1][j - 1] = 1;
         setNumRevealedTiles(++numRevealedTiles);
-        adjacentCellsToReveal.push([i - 1, j - 1]);
+        grid[i - 1]?.[j - 1] === 0 && adjacentCellsToReveal.push([i - 1, j - 1]);
       }
       // reveal top
-      if (grid[i - 1] && grid[i - 1][j] === 0 && revealedGrid[i - 1][j] === 0) {
+      if (grid[i - 1]?.[j] >= 0 && revealedGrid[i - 1]?.[j] === 0) {
         revealedGrid[i - 1][j] = 1;
         setNumRevealedTiles(++numRevealedTiles);
-        adjacentCellsToReveal.push([i - 1, j]);
+        grid[i - 1]?.[j] === 0 && adjacentCellsToReveal.push([i - 1, j]);
       }
       // reveal top right
-      if (
-        grid[i - 1] &&
-        grid[i - 1][j + 1] === 0 &&
-        revealedGrid[i - 1][j + 1] === 0
-      ) {
+      if (grid[i - 1]?.[j + 1] >= 0 && revealedGrid[i - 1]?.[j + 1] === 0) {
         revealedGrid[i - 1][j + 1] = 1;
         setNumRevealedTiles(++numRevealedTiles);
-        adjacentCellsToReveal.push([i - 1, j + 1]);
+        grid[i - 1]?.[j + 1] === 0 && adjacentCellsToReveal.push([i - 1, j + 1]);
       }
       // reveal right
-      if (grid[i] && grid[i][j + 1] === 0 && revealedGrid[i][j + 1] === 0) {
+      if (grid[i]?.[j + 1] >= 0 && revealedGrid[i]?.[j + 1] === 0) {
         revealedGrid[i][j + 1] = 1;
         setNumRevealedTiles(++numRevealedTiles);
-        adjacentCellsToReveal.push([i, j + 1]);
+        grid[i]?.[j + 1] === 0 && adjacentCellsToReveal.push([i, j + 1]);
       }
       // reveal bottom right
-      if (
-        grid[i + 1] &&
-        grid[i + 1][j + 1] === 0 &&
-        revealedGrid[i + 1][j + 1] === 0
-      ) {
+      if (grid[i + 1]?.[j + 1] >= 0 && revealedGrid[i + 1]?.[j + 1] === 0) {
         revealedGrid[i + 1][j + 1] = 1;
         setNumRevealedTiles(++numRevealedTiles);
-        adjacentCellsToReveal.push([i + 1, j + 1]);
+        grid[i + 1]?.[j + 1] === 0 && adjacentCellsToReveal.push([i + 1, j + 1]);
       }
       // reveal bottom
-      if (grid[i + 1] && grid[i + 1][j] === 0 && revealedGrid[i + 1][j] === 0) {
+      if (grid[i + 1]?.[j] >= 0 && revealedGrid[i + 1]?.[j] === 0) {
         revealedGrid[i + 1][j] = 1;
         setNumRevealedTiles(++numRevealedTiles);
-        adjacentCellsToReveal.push([i + 1, j]);
+        grid[i + 1]?.[j] === 0 && adjacentCellsToReveal.push([i + 1, j]);
       }
       // reveal bottom left
-      if (
-        grid[i + 1] &&
-        grid[i + 1][j - 1] === 0 &&
-        revealedGrid[i + 1][j - 1] === 0
-      ) {
+      if (grid[i + 1]?.[j - 1] >= 0 && revealedGrid[i + 1]?.[j - 1] === 0) {
         revealedGrid[i + 1][j - 1] = 1;
         setNumRevealedTiles(++numRevealedTiles);
-        adjacentCellsToReveal.push([i + 1, j - 1]);
+        grid[i + 1]?.[j - 1] === 0 && adjacentCellsToReveal.push([i + 1, j - 1]);
       }
       // reveal left
-      if (grid[i][j - 1] === 0 && revealedGrid[i][j - 1] === 0) {
+      if (grid[i]?.[j - 1] >= 0 && revealedGrid[i]?.[j - 1] === 0) {
         revealedGrid[i][j - 1] = 1;
         setNumRevealedTiles(++numRevealedTiles);
-        adjacentCellsToReveal.push([i, j - 1]);
+        grid[i]?.[j - 1] === 0 && adjacentCellsToReveal.push([i, j - 1]);
       }
       adjacentCellsToReveal.shift();
     } while (adjacentCellsToReveal.length > 0);
