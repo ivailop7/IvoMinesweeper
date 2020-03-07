@@ -37,10 +37,13 @@ export const generateSolvedField = (
 ) => {
   let field: any = generateFieldOf(width, height, 0);
   // add mines
-  for (let k = 0; k <= numMines; k++) {
+  while (numMines > 0) {
     const x = Math.floor(Math.random() * width);
     const y = Math.floor(Math.random() * height);
+    // As it's small ints, might have duplicates, thus checking
+    if (field[x][y] === "x") continue;
     field[x][y] = "x";
+    numMines -= 1;
   }
   // populate numbers
   for (let i = 0; i < height; i++) {
