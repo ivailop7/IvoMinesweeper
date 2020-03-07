@@ -1,5 +1,6 @@
 import React from "react";
 import { Window, WindowHeader, WindowContent, Button } from "react95";
+import { popupWindowStyle, popupWindowHeaderStyle, closeWindowButtonStyle } from "../common-styles";
 import mine from "../../assets/mine.png";
 
 function GameOverPopup(props: any) {
@@ -11,29 +12,14 @@ function GameOverPopup(props: any) {
   };
   return (
     <div style={{ boxShadow: "5px 10px #888888" }}>
-      <Window
-        style={{
-          width: 380,
-          position: "fixed",
-          zIndex: "9999",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)"
-        }}
-      >
-        <WindowHeader
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between"
-          }}
-        >
+      <Window style={popupWindowStyle}>
+        <WindowHeader style={popupWindowHeaderStyle}>
           <span>Game Over!</span>
           <Button
-            style={{ marginRight: "-6px", marginTop: "1px" }}
+            style={closeWindowButtonStyle}
             size={"sm"}
             square
-            onClick={() => props.closeFunc()}
+            onClick={() => props.close()}
           >
             <span style={{ fontWeight: "bold", transform: "translateY(-1px)" }}>
               x
@@ -53,7 +39,7 @@ function GameOverPopup(props: any) {
           </Button>
           <br />
           <br />
-          <Button onClick={() => props.closeFunc()}>Close</Button>
+          <Button onClick={() => props.close()}>Close</Button>
         </WindowContent>
       </Window>
     </div>

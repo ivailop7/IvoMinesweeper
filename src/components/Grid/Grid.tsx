@@ -260,8 +260,8 @@ const Grid = React.forwardRef((props: any, ref) => {
 
   return (
     <>
-      {openCongrats && <Congrats closeFunc={() => setOpenCongrats(false)} />}
-      {openGameOver && <GameOver closeFunc={() => setOpenGameOver(false)} />}
+      {openCongrats && <Congrats close={() => setOpenCongrats(false)} />}
+      {openGameOver && <GameOver close={() => setOpenGameOver(false)} />}
       {buttons}
     </>
   );

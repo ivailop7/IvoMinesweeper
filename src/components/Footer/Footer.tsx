@@ -12,14 +12,6 @@ function Menu() {
   const [openAbout, setOpenAbout] = React.useState(false);
   const [openRules, setOpenRules] = React.useState(false);
 
-  function handleClick() {
-    setOpen(!open);
-  }
-
-  function handleClose() {
-    setOpen(false);
-  }
-
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
       {open && (
@@ -27,17 +19,17 @@ function Menu() {
           horizontalAlign="left"
           verticalAlign="top"
           open={open}
-          onClick={handleClose}
+          onClick={() => setOpen(false)}
         >
           <ListItem onClick={() => setOpenRules(true)}>How to Play</ListItem>
           <Divider />
           <ListItem onClick={() => setOpenAbout(true)}>About</ListItem>
         </List>
       )}
-      {openAbout && <About closeFunc={() => setOpenAbout(false)} />}
-      {openRules && <Rules closeFunc={() => setOpenRules(false)} />}
+      {openAbout && <About close={() => setOpenAbout(false)} />}
+      {openRules && <Rules close={() => setOpenRules(false)} />}
       <Button
-        onClick={handleClick}
+        onClick={() => setOpen(!open)}
         active={open}
         style={{ fontWeight: "bold" }}
       >
@@ -62,7 +54,6 @@ function Footer() {
       <Toolbar style={{ justifyContent: "left" }}>
         <Menu />
         <Bar />
-
         <Button
           variant={"default"}
           style={{ border: "none" }}

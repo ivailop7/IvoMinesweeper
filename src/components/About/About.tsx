@@ -1,33 +1,19 @@
 import React from "react";
 import { Window, WindowHeader, WindowContent, Button } from "react95";
+import { popupWindowStyle, popupWindowHeaderStyle, closeWindowButtonStyle } from "../common-styles";
 import flag from "../../assets/flag.png";
 
 function AboutPopup(props: any) {
   return (
     <div style={{ boxShadow: "5px 10px #888888" }}>
-      <Window
-        style={{
-          width: 380,
-          position: "fixed",
-          zIndex: "-1",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)"
-        }}
-      >
-        <WindowHeader
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between"
-          }}
-        >
+      <Window style={popupWindowStyle} >
+        <WindowHeader style={popupWindowHeaderStyle}>
           <span>About</span>
           <Button
-            style={{ marginRight: "-6px", marginTop: "1px" }}
+            style={closeWindowButtonStyle}
             size={"sm"}
             square
-            onClick={() => props.closeFunc()}
+            onClick={() => props.close()}
           >
             <span style={{ fontWeight: "bold", transform: "translateY(-1px)" }}>
               x
@@ -40,7 +26,6 @@ function AboutPopup(props: any) {
           </div>
           <br />
           <br />
-          <br />
           This game was developed as a part of a learning exercise.
           <br />
           <br />
@@ -50,14 +35,13 @@ function AboutPopup(props: any) {
             style={{ textDecoration: "underline" }}
           >
             Blog Post
-          </a>
-          .
+          </a>.
           <br />
           <br />
           Ivaylo Pavlov (March 2020)
           <br />
           <br />
-          <Button onClick={() => props.closeFunc()}>Close</Button>
+          <Button onClick={() => props.close()}>Close</Button>
         </WindowContent>
       </Window>
     </div>
