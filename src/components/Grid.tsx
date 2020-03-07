@@ -5,6 +5,19 @@ import Congrats from "./Congrats";
 import mine from "../assets/mine.png";
 import flag from "../assets/flag.png";
 
+const numColorsMap: any = {
+  x: null,
+  0: "lightgrey",
+  1: "blue",
+  2: "green",
+  3: "red",
+  4: "purple",
+  5: "maroon",
+  6: "turquoise",
+  7: "black",
+  8: "grey"
+};
+
 const generateFieldOf = (width: number, height: number, value: number) => {
   let field: any = [];
   for (let i = 0; i < height; i++) {
@@ -61,26 +74,9 @@ export const generateSolvedField = (
   return [...field];
 };
 
-const numColorsMap: any = {
-  x: null,
-  0: "lightgrey",
-  1: "blue",
-  2: "green",
-  3: "red",
-  4: "purple",
-  5: "maroon",
-  6: "turquoise",
-  7: "black",
-  8: "grey"
-};
-
 const Grid = React.forwardRef((props: any, ref) => {
-  let [grid, setGrid] = useState(
-    generateSolvedField(props.height, props.width, props.numMines)
-  );
-  let [revealedGrid, setRevealedGrid] = useState(
-    generateFieldOf(props.width, props.height, 0)
-  );
+  let [grid, setGrid] = useState(generateSolvedField(props.height, props.width, props.numMines));
+  let [revealedGrid, setRevealedGrid] = useState(generateFieldOf(props.width, props.height, 0));
   let [numRevealedTiles, setNumRevealedTiles] = useState(0);
   let [numFlags, setNumFlags] = useState(0);
 
@@ -109,6 +105,7 @@ const Grid = React.forwardRef((props: any, ref) => {
 
   const winGame = () => {
     setOpenCongrats(true);
+    setRevealedGrid([...generateFieldOf(props.width, props.height, 1)]);
   };
 
   const updateTileState = (i: number, j: number) => {
@@ -126,8 +123,7 @@ const Grid = React.forwardRef((props: any, ref) => {
     revealedGrid[i][j] = 1;
     setNumRevealedTiles(++numRevealedTiles);
     setRevealedGrid([...revealedGrid]);
-    numRevealedTiles === props.width * props.height - props.numMines &&
-      winGame();
+    numRevealedTiles === props.width * props.height - props.numMines && winGame();
   };
 
   const toggleFlag = (i: number, j: number) => {
