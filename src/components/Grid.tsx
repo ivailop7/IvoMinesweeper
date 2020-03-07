@@ -84,15 +84,22 @@ const Grid = React.forwardRef((props: any, ref) => {
     newGame() {
       setNumFlags(0);
       props.setFlagsCount(0);
+      setNumRevealedTiles(0);
       setGrid([
         ...generateSolvedField(props.height, props.width, props.numMines)
       ]);
       setRevealedGrid([...generateFieldOf(props.width, props.height, 0)]);
     },
     restartGame() {
+      setNumFlags(0);
+      props.setFlagsCount(0);
+      setNumRevealedTiles(0);
       setRevealedGrid([...generateFieldOf(props.width, props.height, 0)]);
     },
     solveGame() {
+      setNumFlags(0);
+      props.setFlagsCount(0);
+      setNumRevealedTiles(0);
       setRevealedGrid([...generateFieldOf(props.width, props.height, 1)]);
     }
   }));
@@ -111,7 +118,6 @@ const Grid = React.forwardRef((props: any, ref) => {
     if (revealedGrid[i][j] === 1) {
       return;
     }
-
     if (grid[i][j] === 0) {
       revealNeighbourZeros(i, j);
     }
@@ -120,9 +126,17 @@ const Grid = React.forwardRef((props: any, ref) => {
       return;
     }
     revealedGrid[i][j] = 1;
-    setNumRevealedTiles(++numRevealedTiles);
+    let numRevealedTiles = 0;
+    for (let i = 0; i < revealedGrid.length; i++) {
+      for (let j = 0; j < revealedGrid[i].length; j++) {
+        if (revealedGrid[i][j] === 1) {
+          numRevealedTiles += 1;
+        }
+      }
+    }
+    setNumRevealedTiles(numRevealedTiles);
     setRevealedGrid([...revealedGrid]);
-    numRevealedTiles === props.width * props.height - props.numMines && winGame();
+    numRevealedTiles === (props.width * props.height - props.numMines) && winGame();
   };
 
   const toggleFlag = (i: number, j: number) => {
@@ -140,59 +154,51 @@ const Grid = React.forwardRef((props: any, ref) => {
 
   const revealNeighbourZeros = (x: number, y: number) => {
     let adjacentCellsToReveal = [[x, y]];
-    do {
+    revealedGrid[x][y] = 1;
+    while (adjacentCellsToReveal.length > 0) {
       let [i, j] = adjacentCellsToReveal[0];
       // reveal top left
       if (grid[i - 1]?.[j - 1] >= 0 && revealedGrid[i - 1]?.[j - 1] === 0) {
         revealedGrid[i - 1][j - 1] = 1;
-        setNumRevealedTiles(++numRevealedTiles);
         grid[i - 1]?.[j - 1] === 0 && adjacentCellsToReveal.push([i - 1, j - 1]);
       }
       // reveal top
       if (grid[i - 1]?.[j] >= 0 && revealedGrid[i - 1]?.[j] === 0) {
         revealedGrid[i - 1][j] = 1;
-        setNumRevealedTiles(++numRevealedTiles);
         grid[i - 1]?.[j] === 0 && adjacentCellsToReveal.push([i - 1, j]);
       }
       // reveal top right
       if (grid[i - 1]?.[j + 1] >= 0 && revealedGrid[i - 1]?.[j + 1] === 0) {
         revealedGrid[i - 1][j + 1] = 1;
-        setNumRevealedTiles(++numRevealedTiles);
         grid[i - 1]?.[j + 1] === 0 && adjacentCellsToReveal.push([i - 1, j + 1]);
       }
       // reveal right
       if (grid[i]?.[j + 1] >= 0 && revealedGrid[i]?.[j + 1] === 0) {
         revealedGrid[i][j + 1] = 1;
-        setNumRevealedTiles(++numRevealedTiles);
         grid[i]?.[j + 1] === 0 && adjacentCellsToReveal.push([i, j + 1]);
       }
       // reveal bottom right
       if (grid[i + 1]?.[j + 1] >= 0 && revealedGrid[i + 1]?.[j + 1] === 0) {
         revealedGrid[i + 1][j + 1] = 1;
-        setNumRevealedTiles(++numRevealedTiles);
         grid[i + 1]?.[j + 1] === 0 && adjacentCellsToReveal.push([i + 1, j + 1]);
       }
       // reveal bottom
       if (grid[i + 1]?.[j] >= 0 && revealedGrid[i + 1]?.[j] === 0) {
         revealedGrid[i + 1][j] = 1;
-        setNumRevealedTiles(++numRevealedTiles);
         grid[i + 1]?.[j] === 0 && adjacentCellsToReveal.push([i + 1, j]);
       }
       // reveal bottom left
       if (grid[i + 1]?.[j - 1] >= 0 && revealedGrid[i + 1]?.[j - 1] === 0) {
         revealedGrid[i + 1][j - 1] = 1;
-        setNumRevealedTiles(++numRevealedTiles);
         grid[i + 1]?.[j - 1] === 0 && adjacentCellsToReveal.push([i + 1, j - 1]);
       }
       // reveal left
       if (grid[i]?.[j - 1] >= 0 && revealedGrid[i]?.[j - 1] === 0) {
         revealedGrid[i][j - 1] = 1;
-        setNumRevealedTiles(++numRevealedTiles);
         grid[i]?.[j - 1] === 0 && adjacentCellsToReveal.push([i, j - 1]);
       }
       adjacentCellsToReveal.shift();
-    } while (adjacentCellsToReveal.length > 0);
-    setNumRevealedTiles(--numRevealedTiles);
+    }
   };
 
   const renderTile = (i: number, j: number) => {
