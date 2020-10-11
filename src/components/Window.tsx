@@ -97,7 +97,9 @@ function WindowFrame() {
           </TableRow>
         </TableBody>
       </Table>
-      <WindowContent>
+      <WindowContent style={{
+        marginRight: "1px"
+      }}>
         <Grid
           ref={gridRef}
           height={9}
